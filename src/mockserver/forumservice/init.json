@@ -1,0 +1,1016 @@
+[
+    {
+        "id": "e5d245c3-a1b2-42bc-952f-475c9cf0448c",
+        "priority": 0,
+        "httpRequest": {
+            "operationId": "getPosts",
+            "specUrlOrPayload": {
+                "openapi": "3.0.1",
+                "info": {
+                    "title": "4um",
+                    "description": "An api for supporting forum posts and comments.",
+                    "version": "0.1.0"
+                },
+                "tags": [
+                    {
+                        "name": "Posts",
+                        "description": "The collection of forum posts."
+                    },
+                    {
+                        "name": "Messages",
+                        "description": "Responses and conversations related to a post."
+                    }
+                ],
+                "paths": {
+                    "/posts": {
+                        "get": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Get the collection of posts.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getPosts",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostRequest"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Create a new post.",
+                            "description": "Method for adding a new post resource to the collection.",
+                            "operationId": "createPost",
+                            "responses": {
+                                "200": {
+                                    "description": "Post was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                }
+                            }
+                        }
+                    },
+                    "/posts/{postid}/messages": {
+                        "get": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Get the collection of messages related to a particular post.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getMessages",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageRequest"
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Create a new message for the specified post.",
+                            "description": "Method for adding a new message to a specified post.",
+                            "operationId": "createMessage",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Message was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "PostRequest": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "PostModel": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "created",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the post was created."
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "MessageRequest": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "MessageModel": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the message was created."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "httpResponse": {
+            "statusCode": 200,
+            "headers": {
+                "content-type": [
+                    "application/json"
+                ]
+            },
+            "body": {
+                "title": "some_string_value",
+                "text": "some_string_value",
+                "username": "some_string_value",
+                "postType": "information"
+            }
+        },
+        "times": {
+            "unlimited": true
+        },
+        "timeToLive": {
+            "unlimited": true
+        }
+    },
+    {
+        "id": "8a3cbbff-abee-490a-a0ef-349ad211c48d",
+        "priority": 0,
+        "httpRequest": {
+            "operationId": "createPost",
+            "specUrlOrPayload": {
+                "openapi": "3.0.1",
+                "info": {
+                    "title": "4um",
+                    "description": "An api for supporting forum posts and comments.",
+                    "version": "0.1.0"
+                },
+                "tags": [
+                    {
+                        "name": "Posts",
+                        "description": "The collection of forum posts."
+                    },
+                    {
+                        "name": "Messages",
+                        "description": "Responses and conversations related to a post."
+                    }
+                ],
+                "paths": {
+                    "/posts": {
+                        "get": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Get the collection of posts.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getPosts",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostRequest"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Create a new post.",
+                            "description": "Method for adding a new post resource to the collection.",
+                            "operationId": "createPost",
+                            "responses": {
+                                "200": {
+                                    "description": "Post was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                }
+                            }
+                        }
+                    },
+                    "/posts/{postid}/messages": {
+                        "get": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Get the collection of messages related to a particular post.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getMessages",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageRequest"
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Create a new message for the specified post.",
+                            "description": "Method for adding a new message to a specified post.",
+                            "operationId": "createMessage",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Message was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "PostRequest": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "PostModel": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "created",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the post was created."
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "MessageRequest": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "MessageModel": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the message was created."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "httpResponse": {
+            "statusCode": 200,
+            "headers": {
+                "content-type": [
+                    "application/json"
+                ]
+            },
+            "body": {
+                "title": "some_string_value",
+                "text": "some_string_value",
+                "username": "some_string_value",
+                "created": "some_string_value",
+                "postType": "information"
+            }
+        },
+        "times": {
+            "unlimited": true
+        },
+        "timeToLive": {
+            "unlimited": true
+        }
+    },
+    {
+        "id": "d3557db9-aa99-4c5f-a5a9-7bb58d229cd8",
+        "priority": 0,
+        "httpRequest": {
+            "operationId": "getMessages",
+            "specUrlOrPayload": {
+                "openapi": "3.0.1",
+                "info": {
+                    "title": "4um",
+                    "description": "An api for supporting forum posts and comments.",
+                    "version": "0.1.0"
+                },
+                "tags": [
+                    {
+                        "name": "Posts",
+                        "description": "The collection of forum posts."
+                    },
+                    {
+                        "name": "Messages",
+                        "description": "Responses and conversations related to a post."
+                    }
+                ],
+                "paths": {
+                    "/posts": {
+                        "get": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Get the collection of posts.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getPosts",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostRequest"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Create a new post.",
+                            "description": "Method for adding a new post resource to the collection.",
+                            "operationId": "createPost",
+                            "responses": {
+                                "200": {
+                                    "description": "Post was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                }
+                            }
+                        }
+                    },
+                    "/posts/{postid}/messages": {
+                        "get": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Get the collection of messages related to a particular post.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getMessages",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageRequest"
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Create a new message for the specified post.",
+                            "description": "Method for adding a new message to a specified post.",
+                            "operationId": "createMessage",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Message was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "PostRequest": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "PostModel": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "created",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the post was created."
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "MessageRequest": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "MessageModel": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the message was created."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "httpResponse": {
+            "statusCode": 200,
+            "headers": {
+                "content-type": [
+                    "application/json"
+                ]
+            },
+            "body": {
+                "text": "some_string_value",
+                "username": "some_string_value"
+            }
+        },
+        "times": {
+            "unlimited": true
+        },
+        "timeToLive": {
+            "unlimited": true
+        }
+    },
+    {
+        "id": "20917d37-da62-4a5f-9bb4-162d9f5358fd",
+        "priority": 0,
+        "httpRequest": {
+            "operationId": "createMessage",
+            "specUrlOrPayload": {
+                "openapi": "3.0.1",
+                "info": {
+                    "title": "4um",
+                    "description": "An api for supporting forum posts and comments.",
+                    "version": "0.1.0"
+                },
+                "tags": [
+                    {
+                        "name": "Posts",
+                        "description": "The collection of forum posts."
+                    },
+                    {
+                        "name": "Messages",
+                        "description": "Responses and conversations related to a post."
+                    }
+                ],
+                "paths": {
+                    "/posts": {
+                        "get": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Get the collection of posts.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getPosts",
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostRequest"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Posts"
+                            ],
+                            "summary": "Create a new post.",
+                            "description": "Method for adding a new post resource to the collection.",
+                            "operationId": "createPost",
+                            "responses": {
+                                "200": {
+                                    "description": "Post was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/PostModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                }
+                            }
+                        }
+                    },
+                    "/posts/{postid}/messages": {
+                        "get": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Get the collection of messages related to a particular post.",
+                            "description": "Returns a collection sorted by creation date.",
+                            "operationId": "getMessages",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Successful retrieval",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageRequest"
+                                            }
+                                        }
+                                    }
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        },
+                        "post": {
+                            "tags": [
+                                "Messages"
+                            ],
+                            "summary": "Create a new message for the specified post.",
+                            "description": "Method for adding a new message to a specified post.",
+                            "operationId": "createMessage",
+                            "parameters": [
+                                {
+                                    "in": "path",
+                                    "name": "postid",
+                                    "schema": {
+                                        "type": "integer"
+                                    },
+                                    "required": true,
+                                    "description": "Numeric ID of the post to attach the message to."
+                                }
+                            ],
+                            "responses": {
+                                "200": {
+                                    "description": "Message was created.",
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/MessageModel"
+                                            }
+                                        }
+                                    }
+                                },
+                                "400": {
+                                    "description": "There was a data issue with the content. Correct before sending again."
+                                },
+                                "404": {
+                                    "description": "A post with the supplied postid could not be found."
+                                }
+                            }
+                        }
+                    }
+                },
+                "components": {
+                    "schemas": {
+                        "PostRequest": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "PostModel": {
+                            "required": [
+                                "title",
+                                "text",
+                                "username",
+                                "created",
+                                "postType"
+                            ],
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the post was created."
+                                },
+                                "postType": {
+                                    "type": "string",
+                                    "enum": [
+                                        "information",
+                                        "discussion",
+                                        "alert",
+                                        "inquiry"
+                                    ]
+                                }
+                            }
+                        },
+                        "MessageRequest": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "MessageModel": {
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                },
+                                "username": {
+                                    "type": "string"
+                                },
+                                "created": {
+                                    "type": "string",
+                                    "description": "Datetime for when the message was created."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "httpResponse": {
+            "statusCode": 200,
+            "headers": {
+                "content-type": [
+                    "application/json"
+                ]
+            },
+            "body": {
+                "text": "some_string_value",
+                "username": "some_string_value",
+                "created": "some_string_value"
+            }
+        },
+        "times": {
+            "unlimited": true
+        },
+        "timeToLive": {
+            "unlimited": true
+        }
+    }
+]

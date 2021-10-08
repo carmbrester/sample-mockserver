@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  charm.Forum.web:
+    image: ${DOCKER_REGISTRY-}charmforumweb
+    build:
+      context: .
+      dockerfile: Charm.Forum.Web/Dockerfile
+    ports:
+      - "10808:80"
+    environment:
+      - FORUM_SERVICE_URL=http://host.docker.internal:10808
+  charmforumweb_mockforumservice:
+    image: mockserver/mockserver
+    ports:
+      - "10818:1080"
+    environment:
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/init.json
+    volumes:
+      - type: bind
+        source: ./mockserver/forumservice
+        target: /config

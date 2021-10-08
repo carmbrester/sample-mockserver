@@ -1,0 +1,160 @@
+openapi: 3.0.1
+info:
+  title: Forum
+  description: 'An api for supporting forum posts and comments.'
+  version: 0.1.0
+tags:
+  - name: Posts
+    description: The collection of forum posts.
+  - name: Messages
+    description: Responses and conversations related to a post.
+paths:
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: Get the collection of posts.
+      description: Returns a collection sorted by creation date.
+      operationId: getPosts
+      responses:
+        200:
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PostRequest'
+                example:
+                  - title: Fantastic Forum Post Title
+                    text: Wow, what a fantastic post this is. Glad you're taking the time to read my most excellent forum post. Would you like to add a message to my most excellent post?
+                    username: mack47
+                    postType: discussion
+                  - title: Lookout, the sky is falling!!
+                    text: Have you taken a look outside lately? The sky is falling and it's time to panic. Get to shelter as quickly as you can!
+                    username: jjackle20
+                    postType: alert
+    post:
+      tags:
+        - Posts
+      summary: Create a new post.
+      description: Method for adding a new post resource to the collection.
+      operationId: createPost
+      responses:
+        200:
+          description: Post was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostModel'
+        400:
+          description: There was a data issue with the content. Correct before sending again.
+  /posts/{postid}/messages:
+    get:
+      tags:
+        - Messages
+      summary: Get the collection of messages related to a particular post.
+      description: Returns a collection sorted by creation date.
+      operationId: getMessages
+      parameters:
+        - in: path
+          name: postid
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the post to attach the message to.
+      responses:
+        200:
+          description: Successful retrieval
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageModel'
+                example:
+                  - text: That is such a great post. I would like for you to expand on what you are talking about further. Could you provide more details.
+                    username: user2710
+                    created: '2021-06-16 13:02:35'
+                  - text: Sure! I just like writing big walls of text for people to read. How is that for more information?
+                    username: mack47
+                    created: '2021-06-16 13:02:35'
+        404:
+          description: A post with the supplied postid could not be found.
+    post:
+      tags:
+        - Messages
+      summary: Create a new message for the specified post.
+      description: Method for adding a new message to a specified post.
+      operationId: createMessage
+      parameters:
+        - in: path
+          name: postid
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the post to attach the message to.
+      responses:
+        200:
+          description: Message was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageRequest'
+        400:
+          description: There was a data issue with the content. Correct before sending again.
+        404:
+          description: A post with the supplied postid could not be found.
+components:
+  schemas:
+    PostRequest:
+      required:
+        - title
+        - text
+        - username
+        - postType
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        username:
+          type: string
+        postType:
+          type: string
+          enum: [information,discussion,alert,inquiry]
+    PostModel:
+      required:
+        - title
+        - text
+        - username
+        - created
+        - postType
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        username:
+          type: string
+        created:
+          type: string
+          description: Datetime for when the post was created.
+        postType:
+          type: string
+          enum: [information,discussion,alert,inquiry]
+    MessageRequest:
+      properties:
+        text:
+          type: string
+        username:
+          type: string
+    MessageModel:
+      properties:
+        text:
+          type: string
+        username:
+          type: string
+        created:
+          type: string
+          description: Datetime for when the message was created.
