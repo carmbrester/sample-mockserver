@@ -6,7 +6,7 @@
     <ProjectGuid>0be6311b-2061-4b51-a612-90eaddce81f5</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>charm.4um.web</DockerServiceName>
+    <DockerServiceName>charm.forum.web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

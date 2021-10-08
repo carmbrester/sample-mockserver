@@ -7,7 +7,7 @@
             "specUrlOrPayload": {
                 "openapi": "3.0.1",
                 "info": {
-                    "title": "4um",
+                    "title": "Forum",
                     "description": "An api for supporting forum posts and comments.",
                     "version": "0.1.0"
                 },
@@ -261,7 +261,7 @@
             "specUrlOrPayload": {
                 "openapi": "3.0.1",
                 "info": {
-                    "title": "4um",
+                    "title": "Forum",
                     "description": "An api for supporting forum posts and comments.",
                     "version": "0.1.0"
                 },
@@ -516,7 +516,7 @@
             "specUrlOrPayload": {
                 "openapi": "3.0.1",
                 "info": {
-                    "title": "4um",
+                    "title": "Forum",
                     "description": "An api for supporting forum posts and comments.",
                     "version": "0.1.0"
                 },
@@ -768,7 +768,7 @@
             "specUrlOrPayload": {
                 "openapi": "3.0.1",
                 "info": {
-                    "title": "4um",
+                    "title": "Forum",
                     "description": "An api for supporting forum posts and comments.",
                     "version": "0.1.0"
                 },
