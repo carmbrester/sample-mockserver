@@ -10,6 +10,11 @@ namespace Charm.Forum.Web.Controllers
 {
     public class ForumController : Controller
     {
+        public ForumController()
+        {
+            Console.WriteLine("blah");
+        }
+
         // GET: ForumController
         public async Task<IActionResult> Index()
         {

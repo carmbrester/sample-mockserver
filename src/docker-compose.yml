@@ -8,7 +8,6 @@ services:
       dockerfile: Charm.Forum.Web/Dockerfile
     ports:
       - "10810:80"
-      - "10811:443"
     environment:
       - FORUM_SERVICE_URL=http://host.docker.internal:10808
   charmforumweb_mockforumservice:
